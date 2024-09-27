@@ -1,37 +1,36 @@
 <template>
   <ion-page>
     <ion-content class="ion-padding login-page">
-      <div class="login-container">
-        <div class="logo-container">
-          <img src="https://via.placeholder.com/150" alt="Logo" class="logo" />
+      <div class="container-login">
+        <div class="logo-box">
+          <img src="https://via.placeholder.com/150" alt="Logo del sitio" class="logo-img" />
         </div>
 
-        
-        <ion-card class="login-card">
+        <ion-card class="form-card">
           <ion-segment value="login">
             <ion-segment-button value="login">
-              <ion-label>Log In</ion-label>
+              <ion-label>Iniciar Sesión</ion-label>
             </ion-segment-button>
             <ion-segment-button value="register">
-              <ion-label>Registrarse</ion-label>
+              <ion-label>Crear Cuenta</ion-label>
             </ion-segment-button>
           </ion-segment>
 
           <ion-card-content>
             <ion-item>
-              <ion-label position="floating">Correo</ion-label>
-              <ion-input type="email" placeholder="Ingresa tu correo"></ion-input>
+              <ion-label position="floating">Correo Electrónico</ion-label>
+              <ion-input type="email" placeholder="Introduce tu correo"></ion-input>
             </ion-item>
 
             <ion-item>
-              <ion-label position="floating">Contraseña</ion-label>
-              <ion-input type="password" placeholder="Ingresa tu contraseña"></ion-input>
+              <ion-label position="floating">Clave de Acceso</ion-label>
+              <ion-input type="password" placeholder="Introduce tu clave"></ion-input>
             </ion-item>
 
-            <ion-button expand="block" color="success" class="ion-margin-top">Log In</ion-button>
-            
-            <ion-text class="forgot-password">
-              <a href="#">¿Olvidaste tu contraseña?</a>
+            <ion-button expand="block" color="primary" class="btn-login">Acceder</ion-button>
+
+            <ion-text class="forgot-link">
+              <a href="#">¿Has olvidado tu clave?</a>
             </ion-text>
           </ion-card-content>
         </ion-card>
@@ -41,7 +40,17 @@
 </template>
 
 <script setup lang="ts">
-import { IonCard, IonCardContent, IonSegment, IonSegmentButton, IonLabel, IonItem, IonInput, IonButton, IonText } from '@ionic/vue';
+import {
+  IonCard,
+  IonCardContent,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel,
+  IonItem,
+  IonInput,
+  IonButton,
+  IonText,
+} from '@ionic/vue';
 </script>
 
 <style scoped>
@@ -52,37 +61,37 @@ import { IonCard, IonCardContent, IonSegment, IonSegmentButton, IonLabel, IonIte
   height: 100%;
 }
 
-.login-container {
+.container-login {
   width: 100%;
-  max-width: 400px;
-  padding: 20px;
+  max-width: 420px;
+  padding: 25px;
   text-align: center;
 }
 
-.logo-container {
-  margin-bottom: 20px;
+.logo-box {
+  margin-bottom: 25px;
 }
 
-.logo {
-  width: 100px;
-  height: 100px;
+.logo-img {
+  width: 90px;
+  height: 90px;
   margin: 0 auto;
 }
 
-.login-card {
-  border-radius: 20px;
-  padding: 20px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+.form-card {
+  border-radius: 25px;
+  padding: 25px;
+  box-shadow: 0px 5px 14px rgba(0, 0, 0, 0.15);
 }
 
 ion-item {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
-.forgot-password {
+.forgot-link {
   display: block;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 a {
@@ -92,5 +101,11 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+.btn-login {
+  margin-top: 20px;
+  font-weight: bold;
+  border-radius: 12px;
 }
 </style>
