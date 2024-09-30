@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar color="tertiary">
+      <ion-toolbar color="success">
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
@@ -24,7 +24,7 @@
         <ion-card-content>
           <ion-item>
             <ion-label>Email de Contacto</ion-label>
-            <ion-text>robe.osses@profesor@duocuc.cl</ion-text>
+            <ion-text>juan.perez@example.com</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>Progreso</ion-label>
@@ -69,7 +69,7 @@ import {
 <style scoped>
 .background-container {
   height: 160px;
-  background: linear-gradient(135deg, #4caf50, #81c784);
+  background: linear-gradient(135deg, #4caf50, #81c784); /* Gradiente verde */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -107,6 +107,8 @@ ion-item {
   margin-top: 20px;
   border-radius: 20px;
   font-weight: bold;
+  background-color: #388e3c; /* Verde oscuro para el botón */
+  color: white;
 }
 
 .btn-logout {

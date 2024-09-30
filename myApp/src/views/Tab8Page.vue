@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar color="primary">
+      <ion-toolbar color="success">
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
@@ -104,7 +104,7 @@ import {
 
 .community-icon {
   font-size: 2.5rem;
-  color: var(--ion-color-primary);
+  color: var(--ion-color-success); 
 }
 
 .post-card {
@@ -120,7 +120,7 @@ import {
 }
 
 .community-list ion-item {
-  --background: #e0f7fa;
+  --background: #e0f7fa; 
   --border-radius: 12px;
   margin-bottom: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -131,7 +131,7 @@ import {
 }
 
 ion-fab-button {
-  --background: var(--ion-color-success);
+  --background: var(--ion-color-success); 
   --color: white;
 }
 </style>

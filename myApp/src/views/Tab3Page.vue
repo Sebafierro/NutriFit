@@ -1,7 +1,7 @@
 <template>
   <ion-page>
     <ion-header>
-      <ion-toolbar color="secondary">
+      <ion-toolbar color="success">
         <ion-buttons slot="start">
           <ion-menu-button></ion-menu-button>
         </ion-buttons>
@@ -62,7 +62,7 @@ import {
 
 <style scoped>
 .config-list ion-item {
-  --background: #27ae60;
+  --background: #4caf50;
   --border-radius: 15px;
   --color: white;
   --ion-item-color: white;
@@ -78,6 +78,8 @@ import {
   margin-top: 25px;
   border-radius: 22px;
   font-weight: bold;
+  background-color: #388e3c;
+  color: white;
 }
 
 .btn-reset {
