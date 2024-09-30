@@ -69,7 +69,7 @@ import {
 <style scoped>
 .background-container {
   height: 160px;
-  background: linear-gradient(135deg, #4caf50, #81c784); /* Gradiente verde */
+  background: linear-gradient(135deg, #4caf50, #81c784); 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -107,7 +107,7 @@ ion-item {
   margin-top: 20px;
   border-radius: 20px;
   font-weight: bold;
-  background-color: #388e3c; /* Verde oscuro para el botón */
+  background-color: #388e3c; 
   color: white;
 }
 
