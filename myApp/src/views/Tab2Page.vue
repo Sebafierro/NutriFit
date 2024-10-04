@@ -10,21 +10,22 @@
     </ion-header>
 
     <ion-content class="ion-padding">
-      <div class="background-container">
-        <div class="avatar-container">
-          <img class="avatar-img" src="https://via.placeholder.com/100" alt="Avatar del Usuario" />
+      
+      <div class="profile-background">
+        <div class="profile-image-container">
+          <img class="profile-image" src="C:\Users\Vicente\Desktop\NutriFit\myApp\src\img\image.png" alt="Foto de Perfil">
         </div>
       </div>
 
       <ion-card class="info-card">
         <ion-card-header>
-          <ion-card-title>Usuario: Juan Pérez</ion-card-title>
+          <ion-card-title>Roberto Osses</ion-card-title>
           <ion-card-subtitle>Membresía Activa</ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
           <ion-item>
             <ion-label>Email de Contacto</ion-label>
-            <ion-text>juan.perez@example.com</ion-text>
+            <ion-text>robe.osses@duocuc.cl</ion-text>
           </ion-item>
           <ion-item>
             <ion-label>Progreso</ion-label>
@@ -67,27 +68,30 @@ import {
 </script>
 
 <style scoped>
-.background-container {
-  height: 160px;
-  background: linear-gradient(135deg, #4caf50, #81c784); 
+
+.profile-background {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: -40px;
+  height: 200px; 
+  background: linear-gradient(135deg, #4caf50, #81c784);
 }
 
-.avatar-container {
-  width: 100px;
-  height: 100px;
+.profile-image-container {
+  width: 120px; 
+  height: 120px; 
   border-radius: 50%;
   overflow: hidden;
   border: 5px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.avatar-img {
+.profile-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Asegura que la imagen ocupe todo el contenedor redondo */
 }
 
 .info-card {

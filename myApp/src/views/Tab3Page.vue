@@ -61,6 +61,8 @@ import {
 </script>
 
 <style scoped>
+
+
 .config-list ion-item {
   --background: #4caf50;
   --border-radius: 15px;

@@ -11,7 +11,7 @@
 
     <ion-content class="ion-padding">
       <div class="green-banner">
-        <img src="https://via.placeholder.com/350x150" alt="Imagen de Actividades" class="banner-img">
+        <img src="C:\Users\Vicente\Desktop\NutriFit-accesso\NutriFit\myApp\src\img\Bio-Ritmo-abrio-Tonus-Gym-su-cuarto-micro-gimnasio.jpg" alt="Imagen de Actividades" class="banner-img">
       </div>
 
       <ion-card class="green-card">
@@ -79,16 +79,21 @@ import { IonMenuButton, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, Io
 </script>
 
 <style scoped>
+
+.banner-img {
+  width: 100%; 
+  height: auto;
+  max-width: 650px; 
+  border-radius: 15px;
+  display: block; 
+  margin: 0 auto; 
+}
+
 .green-banner {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.banner-img {
-  width: 100%;
-  height: auto;
-  border-radius: 15px;
-}
 
 .green-card {
   border-radius: 20px;

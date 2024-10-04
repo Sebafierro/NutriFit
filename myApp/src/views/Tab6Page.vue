@@ -10,7 +10,6 @@
     </ion-header>
 
     <ion-content class="ion-padding">
-      <!-- Puedes agregar aquí etiquetas ion-text o ion-label para reemplazar el breadcrumb -->
       <ion-text>
         <p><strong>Inicio</strong> / Calendario</p>
       </ion-text>
