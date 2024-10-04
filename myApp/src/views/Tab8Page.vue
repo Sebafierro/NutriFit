@@ -130,6 +130,15 @@ import {
   transform: scale(1.01);
 }
 
+.community-list ion-label h2 {
+  color: #004d40; 
+  font-weight: bold;
+}
+
+.community-list ion-label p {
+  color: #00695c; 
+}
+
 ion-fab-button {
   --background: var(--ion-color-success); 
   --color: white;

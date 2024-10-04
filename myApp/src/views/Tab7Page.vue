@@ -98,14 +98,13 @@ import {
 }
 
 .chart-img {
-  width: 200%; 
-  max-width: 650px; 
+  width: 100%; 
+  max-width: 400px; 
   height: auto;
-  border-radius: 12px; 
-  display: block; 
+  border-radius: 12px;
+  display: block;
   margin: 0 auto; 
 }
-
 
 .green-list ion-item {
   --background: #a8e6cf;
