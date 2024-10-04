@@ -11,7 +11,7 @@
 
     <ion-content class="ion-padding">
       <div class="green-banner">
-        <img src="C:\Users\Vicente\Desktop\NutriFit-accesso\NutriFit\myApp\src\img\Bio-Ritmo-abrio-Tonus-Gym-su-cuarto-micro-gimnasio.jpg" alt="Imagen de Actividades" class="banner-img">
+        <img :src="bannerImage" alt="Imagen de Actividades" class="banner-img">
       </div>
 
       <ion-card class="green-card">
@@ -75,7 +75,28 @@
 </template>
 
 <script setup lang="ts">
-import { IonMenuButton, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonChip, IonContent, IonHeader, IonPage } from '@ionic/vue';
+import {
+  IonMenuButton,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonButton,
+  IonIcon,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent,
+  IonChip,
+  IonContent,
+  IonHeader,
+  IonPage
+} from '@ionic/vue';
+
+import bannerImage from '@/img/Bio-Ritmo-abrio-Tonus-Gym-su-cuarto-micro-gimnasio.jpg';
 </script>
 
 <style scoped>
@@ -93,7 +114,6 @@ import { IonMenuButton, IonToolbar, IonTitle, IonButtons, IonButton, IonIcon, Io
   text-align: center;
   margin-bottom: 20px;
 }
-
 
 .green-card {
   border-radius: 20px;

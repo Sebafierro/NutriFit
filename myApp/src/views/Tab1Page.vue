@@ -3,7 +3,8 @@
     <ion-content class="ion-padding login-page">
       <div class="container-login">
         <div class="logo-box">
-          <img src="C:\Users\Vicente\Desktop\NutriFit-accesso\NutriFit\myApp\src\img\dv9y2021487932021-05-263911643Gorilla-Gym.jpg" alt="Logo del sitio" class="logo-img" />
+          <!-- Imagen importada -->
+          <img :src="logo" alt="Logo del sitio" class="logo-img" />
         </div>
 
         <ion-card class="form-card">
@@ -44,22 +45,22 @@
 
               <ion-item>
                 <ion-label position="floating">Nombre</ion-label>
-                <ion-input type="text" placeholder="Introduce tu nombre"></ion-input>
+                <ion-input type="text" v-model="nombre" placeholder="Introduce tu nombre"></ion-input>
               </ion-item>
 
               <ion-item>
                 <ion-label position="floating">Apellidos</ion-label>
-                <ion-input type="text" placeholder="Introduce tus apellidos"></ion-input>
+                <ion-input type="text" v-model="apellidos" placeholder="Introduce tus apellidos"></ion-input>
               </ion-item>
 
               <ion-item>
                 <ion-label position="floating">Fecha de Nacimiento</ion-label>
-                <ion-datetime display-format="DD MMM YYYY" placeholder="Selecciona tu fecha"></ion-datetime>
+                <ion-datetime display-format="DD MMM YYYY" picker-format="DD MMMM YYYY" placeholder="Selecciona tu fecha" v-model="fechaNacimiento"></ion-datetime>
               </ion-item>
 
               <ion-item>
                 <ion-label position="floating">Correo Electrónico</ion-label>
-                <ion-input type="email" placeholder="Introduce tu correo"></ion-input>
+                <ion-input type="email" v-model="correo" placeholder="Introduce tu correo"></ion-input>
               </ion-item>
 
               <ion-item>
@@ -73,9 +74,19 @@
               </ion-item>
               <ion-text v-if="!isPasswordStrong" color="danger">Contraseña demasiado débil</ion-text>
 
-              <ion-button expand="block" color="success" class="btn-register" :disabled="!isValidRUT || !isPasswordStrong">
+              <ion-button expand="block" color="success" class="btn-register" :disabled="!isValidRUT || !isPasswordStrong" @click="registrarUsuario">
                 Registrarse
               </ion-button>
+
+              <!-- Registro de datos ingresados -->
+              <div v-if="registroRealizado" class="registro-datos">
+                <h3>Datos Registrados:</h3>
+                <p><strong>RUT:</strong> {{ rut }}</p>
+                <p><strong>Nombre:</strong> {{ nombre }}</p>
+                <p><strong>Apellidos:</strong> {{ apellidos }}</p>
+                <p><strong>Fecha de Nacimiento:</strong> {{ fechaNacimiento }}</p>
+                <p><strong>Correo Electrónico:</strong> {{ correo }}</p>
+              </div>
             </div>
           </ion-card-content>
         </ion-card>
@@ -86,6 +97,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import logo from '@/img/dv9y2021487932021-05-263911643Gorilla-Gym.jpg';
+
 import {
   IonCard,
   IonCardContent,
@@ -102,9 +115,14 @@ import {
 const segment = ref('login');
 
 const rut = ref('');
+const nombre = ref('');
+const apellidos = ref('');
+const fechaNacimiento = ref('');
+const correo = ref('');
 const password = ref('');
 const isValidRUT = ref(true);
 const isPasswordStrong = ref(true);
+const registroRealizado = ref(false);
 
 const validateRUT = () => {
   const rutWithoutDots = rut.value.replace(/\./g, '').replace('-', '');
@@ -127,6 +145,12 @@ const validateRUT = () => {
 const validatePassword = () => {
   const passwordCriteria = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   isPasswordStrong.value = passwordCriteria.test(password.value);
+};
+
+const registrarUsuario = () => {
+  if (isValidRUT.value && isPasswordStrong.value) {
+    registroRealizado.value = true;
+  }
 };
 </script>
 
@@ -200,6 +224,10 @@ a:hover {
   font-weight: bold;
   border-radius: 12px;
   color: white;
+}
+
+.registro-datos {
+  margin-top: 20px;
 }
 
 @media (min-width: 768px) {

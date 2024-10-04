@@ -13,7 +13,7 @@
       
       <div class="profile-background">
         <div class="profile-image-container">
-          <img class="profile-image" src="C:\Users\Vicente\Desktop\NutriFit\myApp\src\img\image.png" alt="Foto de Perfil">
+          <img class="profile-image" :src="profileImage" alt="Foto de Perfil">
         </div>
       </div>
 
@@ -65,6 +65,8 @@ import {
   IonHeader,
   IonPage,
 } from '@ionic/vue';
+
+import profileImage from '@/img/image.png';
 </script>
 
 <style scoped>
@@ -91,7 +93,7 @@ import {
 .profile-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Asegura que la imagen ocupe todo el contenedor redondo */
+  object-fit: cover; 
 }
 
 .info-card {
@@ -121,3 +123,4 @@ ion-item {
   font-weight: bold;
 }
 </style>
+

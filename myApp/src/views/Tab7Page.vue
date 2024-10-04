@@ -20,7 +20,7 @@
           <ion-card-title>Gráfica de Progreso Semanal</ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <img src="C:\Users\Vicente\Desktop\NutriFit-accesso\NutriFit\myApp\src\img\1_DXiAi03sCw1aBv5fGU5HJg.png" alt="Gráfica de Progreso" class="chart-img" />
+          <img :src="progressChart" alt="Gráfica de Progreso" class="chart-img" />
         </ion-card-content>
       </ion-card>
 
@@ -76,6 +76,8 @@ import {
   IonHeader,
   IonPage,
 } from '@ionic/vue';
+
+import progressChart from '@/img/1_DXiAi03sCw1aBv5fGU5HJg.png';
 </script>
 
 <style scoped>

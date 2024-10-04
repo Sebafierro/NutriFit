@@ -11,7 +11,7 @@
 
     <ion-content class="ion-padding">
       <ion-card class="green-card">
-        <img src="C:\Users\Vicente\Desktop\NutriFit-accesso\NutriFit\myApp\src\img\avena-con-frutas.jpg" alt="Desayuno" class="meal-img" />
+        <img :src="breakfastImage" alt="Desayuno" class="meal-img" />
         <ion-card-header>
           <ion-card-title>Desayuno</ion-card-title>
           <ion-card-subtitle>Avena con frutas</ion-card-subtitle>
@@ -25,7 +25,7 @@
       </ion-card>
 
       <ion-card class="green-card">
-        <img src="C:\Users\Vicente\Desktop\NutriFit-accesso\NutriFit\myApp\src\img\0f96f4fe5221fbbb50b5caf69b2f2ee5_Maggi_-_Chicken_Vegetable_Stir_fry_1080_850.jpg" alt="Almuerzo" class="meal-img" />
+        <img :src="lunchImage" alt="Almuerzo" class="meal-img" />
         <ion-card-header>
           <ion-card-title>Almuerzo</ion-card-title>
           <ion-card-subtitle>Pechuga de pollo con ensalada</ion-card-subtitle>
@@ -39,7 +39,7 @@
       </ion-card>
 
       <ion-card class="green-card">
-        <img src="C:\Users\Vicente\Desktop\NutriFit-accesso\NutriFit\myApp\src\img\ensalada-de-atún-internet-1.jpg" alt="Cena" class="meal-img" />
+        <img :src="dinnerImage" alt="Cena" class="meal-img" />
         <ion-card-header>
           <ion-card-title>Cena</ion-card-title>
           <ion-card-subtitle>Ensalada con atún</ion-card-subtitle>
@@ -77,6 +77,9 @@ import {
   IonHeader,
   IonPage,
 } from '@ionic/vue';
+import breakfastImage from '@/img/avena-con-frutas.jpg';
+import lunchImage from '@/img/0f96f4fe5221fbbb50b5caf69b2f2ee5_Maggi_-_Chicken_Vegetable_Stir_fry_1080_850.jpg';
+import dinnerImage from '@/img/ensalada-de-atún-internet-1.jpg';
 </script>
 
 <style scoped>
@@ -102,4 +105,3 @@ import {
   font-weight: bold;
 }
 </style>
-
