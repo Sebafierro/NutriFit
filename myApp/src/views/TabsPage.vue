@@ -2,7 +2,7 @@
   <ion-page>
     <ion-tabs>
       <ion-router-outlet></ion-router-outlet>
-      <ion-tab-bar slot="bottom">
+      <ion-tab-bar slot="bottom" scrollable>
         <ion-tab-button tab="tab1" href="/tabs/tab1">
           <ion-icon aria-hidden="true" :icon="triangle" />
           <ion-label>Tab 1</ion-label>
@@ -51,3 +51,32 @@
 import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonIcon, IonPage, IonRouterOutlet } from '@ionic/vue';
 import { ellipse, square, triangle } from 'ionicons/icons';
 </script>
+
+<style scoped>
+ion-tab-bar {
+  display: flex;
+  overflow-x: scroll; 
+  white-space: nowrap; 
+  scroll-behavior: smooth; 
+  padding-left: 0; 
+  justify-content: flex-start; 
+}
+
+ion-tab-button {
+  flex-shrink: 0; 
+  min-width: 100px; 
+}
+
+ion-tabs {
+  overflow: hidden; 
+}
+
+ion-tab-bar::-webkit-scrollbar {
+  display: none; 
+}
+
+ion-tab-bar {
+  margin-left: 0; 
+  padding-right: 10px; 
+}
+</style>

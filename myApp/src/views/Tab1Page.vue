@@ -3,11 +3,11 @@
     <ion-content class="ion-padding login-page">
       <div class="container-login">
         <div class="logo-box">
-          <img src="https://via.placeholder.com/150" alt="Logo del sitio" class="logo-img" />
+          <img src="C:\Users\Vicente\Desktop\NutriFit-accesso\NutriFit\myApp\src\img\dv9y2021487932021-05-263911643Gorilla-Gym.jpg" alt="Logo del sitio" class="logo-img" />
         </div>
 
         <ion-card class="form-card">
-          <ion-segment value="login">
+          <ion-segment v-model="segment">
             <ion-segment-button value="login">
               <ion-label>Iniciar Sesión</ion-label>
             </ion-segment-button>
@@ -17,21 +17,66 @@
           </ion-segment>
 
           <ion-card-content>
-            <ion-item>
-              <ion-label position="floating">Correo Electrónico</ion-label>
-              <ion-input type="email" placeholder="Introduce tu correo"></ion-input>
-            </ion-item>
+            <div v-if="segment === 'login'">
+              <ion-item>
+                <ion-label position="floating">Correo Electrónico</ion-label>
+                <ion-input type="email" placeholder="Introduce tu correo"></ion-input>
+              </ion-item>
 
-            <ion-item>
-              <ion-label position="floating">Clave de Acceso</ion-label>
-              <ion-input type="password" placeholder="Introduce tu clave"></ion-input>
-            </ion-item>
+              <ion-item>
+                <ion-label position="floating">Clave de Acceso</ion-label>
+                <ion-input type="password" placeholder="Introduce tu clave"></ion-input>
+              </ion-item>
 
-            <ion-button expand="block" color="primary" class="btn-login">Acceder</ion-button>
+              <ion-button expand="block" color="success" class="btn-login">Acceder</ion-button>
 
-            <ion-text class="forgot-link">
-              <a href="#">¿Has olvidado tu clave?</a>
-            </ion-text>
+              <ion-text class="forgot-link">
+                <a href="#">¿Has olvidado tu clave?</a>
+              </ion-text>
+            </div>
+
+            <div v-else>
+              <ion-item>
+                <ion-label position="floating">RUT</ion-label>
+                <ion-input type="text" v-model="rut" @ionBlur="validateRUT" placeholder="Introduce tu RUT"></ion-input>
+                <ion-text v-if="!isValidRUT" color="danger">RUT inválido</ion-text>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Nombre</ion-label>
+                <ion-input type="text" placeholder="Introduce tu nombre"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Apellidos</ion-label>
+                <ion-input type="text" placeholder="Introduce tus apellidos"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Fecha de Nacimiento</ion-label>
+                <ion-datetime display-format="DD MMM YYYY" placeholder="Selecciona tu fecha"></ion-datetime>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Correo Electrónico</ion-label>
+                <ion-input type="email" placeholder="Introduce tu correo"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label position="floating">Crear Contraseña</ion-label>
+                <ion-input
+                  type="password"
+                  v-model="password"
+                  @ionBlur="validatePassword"
+                  placeholder="Introduce tu contraseña"
+                ></ion-input>
+              </ion-item>
+              <ion-text v-if="!isPasswordStrong" color="danger">Contraseña demasiado débil</ion-text>
+
+              <ion-button expand="block" color="success" class="btn-register" :disabled="!isValidRUT || !isPasswordStrong">
+                Registrarse
+              </ion-button>
+            </div>
           </ion-card-content>
         </ion-card>
       </div>
@@ -40,6 +85,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import {
   IonCard,
   IonCardContent,
@@ -50,7 +96,38 @@ import {
   IonInput,
   IonButton,
   IonText,
+  IonDatetime
 } from '@ionic/vue';
+
+const segment = ref('login');
+
+const rut = ref('');
+const password = ref('');
+const isValidRUT = ref(true);
+const isPasswordStrong = ref(true);
+
+const validateRUT = () => {
+  const rutWithoutDots = rut.value.replace(/\./g, '').replace('-', '');
+  const body = rutWithoutDots.slice(0, -1);
+  const dv = rutWithoutDots.slice(-1).toUpperCase();
+  let sum = 0;
+  let multiplier = 2;
+
+  for (let i = body.length - 1; i >= 0; i--) {
+    sum += parseInt(body[i]) * multiplier;
+    multiplier = multiplier < 7 ? multiplier + 1 : 2;
+  }
+
+  const calculatedDV = 11 - (sum % 11);
+  const validDV = calculatedDV === 11 ? '0' : calculatedDV === 10 ? 'K' : String(calculatedDV);
+
+  isValidRUT.value = dv === validDV;
+};
+
+const validatePassword = () => {
+  const passwordCriteria = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  isPasswordStrong.value = passwordCriteria.test(password.value);
+};
 </script>
 
 <style scoped>
@@ -66,6 +143,7 @@ import {
   max-width: 420px;
   padding: 25px;
   text-align: center;
+  margin: 0 auto; 
 }
 
 .logo-box {
@@ -86,6 +164,20 @@ import {
 
 ion-item {
   margin-bottom: 20px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --inner-padding-top: 15px;
+  --inner-padding-bottom: 10px;
+}
+
+ion-label {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+ion-input, ion-datetime {
+  font-size: 14px;
+  --padding-top: 12px;
 }
 
 .forgot-link {
@@ -95,7 +187,7 @@ ion-item {
 }
 
 a {
-  color: var(--ion-color-primary);
+  color: var(--ion-color-success);
   text-decoration: none;
 }
 
@@ -103,9 +195,20 @@ a:hover {
   text-decoration: underline;
 }
 
-.btn-login {
+.btn-login, .btn-register {
   margin-top: 20px;
   font-weight: bold;
   border-radius: 12px;
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .container-login {
+    max-width: 500px;
+  }
+
+  .form-card {
+    padding: 30px;
+  }
 }
 </style>
