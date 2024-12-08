@@ -1,0 +1,23 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdk 33 // Cambia este número si usas otro SDK
+    defaultConfig {
+        applicationId "com.example.nutrifit"
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation "androidx.core:core-ktx:1.10.0"
+    implementation "androidx.appcompat:appcompat:1.6.1"
+}

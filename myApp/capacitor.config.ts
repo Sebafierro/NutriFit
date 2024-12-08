@@ -1,9 +1,10 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'myApp',
-  webDir: 'dist'
+  appId: 'com.nutrifit.app', 
+  appName: 'NutriFit',      
+  webDir: 'dist',           
+  bundledWebRuntime: false  
 };
 
 export default config;

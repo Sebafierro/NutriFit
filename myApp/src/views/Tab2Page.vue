@@ -10,10 +10,9 @@
     </ion-header>
 
     <ion-content class="ion-padding">
-      
       <div class="profile-background">
         <div class="profile-image-container">
-          <img class="profile-image" :src="profileImage" alt="Foto de Perfil">
+          <img class="profile-image" :src="profileImage" alt="Foto de Perfil" />
         </div>
       </div>
 
@@ -34,11 +33,11 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-button expand="block" color="success" class="btn-edit">
+      <ion-button expand="block" color="success" class="btn-edit" @click="actualizarPerfil">
         Actualizar Perfil <ion-icon name="create-outline" slot="end"></ion-icon>
       </ion-button>
 
-      <ion-button expand="block" color="danger" class="btn-logout">
+      <ion-button expand="block" color="danger" class="btn-logout" @click="cerrarSesion">
         Cerrar Sesión <ion-icon name="log-out-outline" slot="end"></ion-icon>
       </ion-button>
     </ion-content>
@@ -64,24 +63,40 @@ import {
   IonContent,
   IonHeader,
   IonPage,
-} from '@ionic/vue';
+} from "@ionic/vue";
 
-import profileImage from '@/img/image.png';
+import { useRouter } from "vue-router";
+import profileImage from "@/img/image.png";
+
+// Router para redirección
+const router = useRouter();
+
+// Función para actualizar perfil
+function actualizarPerfil() {
+  // Lógica para actualizar perfil (puedes adaptarla según tus necesidades)
+  router.push("/perfil/editar"); // Cambia a una ruta de edición si existe
+}
+
+// Función para cerrar sesión
+function cerrarSesion() {
+  // Lógica para cerrar sesión
+  localStorage.clear(); // Borra información de la sesión
+  router.push("/login"); // Redirige a la página de login
+}
 </script>
 
 <style scoped>
-
 .profile-background {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 200px; 
+  height: 200px;
   background: linear-gradient(135deg, #4caf50, #81c784);
 }
 
 .profile-image-container {
-  width: 120px; 
-  height: 120px; 
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   overflow: hidden;
   border: 5px solid white;
@@ -93,7 +108,7 @@ import profileImage from '@/img/image.png';
 .profile-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; 
+  object-fit: cover;
 }
 
 .info-card {
@@ -113,7 +128,7 @@ ion-item {
   margin-top: 20px;
   border-radius: 20px;
   font-weight: bold;
-  background-color: #388e3c; 
+  background-color: #388e3c;
   color: white;
 }
 
@@ -123,4 +138,3 @@ ion-item {
   font-weight: bold;
 }
 </style>
-

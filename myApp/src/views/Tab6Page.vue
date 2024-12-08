@@ -14,21 +14,24 @@
         <p><strong>Inicio</strong> / Calendario</p>
       </ion-text>
 
+      <!-- Entrenamiento de Hoy -->
       <ion-card class="green-card">
         <ion-card-header>
           <ion-card-title>Entrenamiento de Hoy</ion-card-title>
-          <ion-card-subtitle>27 de Septiembre</ion-card-subtitle>
+          <ion-card-subtitle>{{ todayFormatted }}</ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
           <ion-chip color="success">Cardio</ion-chip>
           <ion-chip color="warning">45 minutos</ion-chip>
           <ion-chip color="danger">HIIT</ion-chip>
+          <p>Calorías estimadas quemadas: {{ caloriesBurned }}</p>
         </ion-card-content>
         <ion-button expand="block" color="success" @click="showDetails = true">
           Ver detalles <ion-icon name="calendar" slot="end"></ion-icon>
         </ion-button>
       </ion-card>
 
+      <!-- Modal Detalles -->
       <ion-modal v-if="showDetails" :is-open="showDetails" @willDismiss="showDetails = false">
         <ion-header>
           <ion-toolbar>
@@ -47,26 +50,30 @@
               <ion-label>Duración: 45 minutos</ion-label>
             </ion-item>
             <ion-item>
-              <ion-label>Calorías quemadas: 400 kcal</ion-label>
+              <ion-label>Calorías quemadas: {{ caloriesBurned }} kcal</ion-label>
             </ion-item>
           </ion-list>
         </ion-content>
       </ion-modal>
 
+      <!-- Lista de Entrenamientos -->
       <ion-list class="green-list" ref="trainingList">
         <ion-item v-for="(training, index) in sortedTrainings" :key="index">
           <ion-icon name="calendar-outline" slot="start"></ion-icon>
           <ion-label>
             <h2>{{ training.day }}: {{ training.type }}</h2>
             <p>Duración: {{ training.duration }} minutos</p>
+            <p>Calorías estimadas: {{ calculateCalories(training.type, training.duration) }} kcal</p>
           </ion-label>
         </ion-item>
       </ion-list>
 
+      <!-- Botón Agregar Entrenamiento -->
       <ion-button expand="block" color="success" @click="showAddTraining = true">
         Agregar Entrenamiento <ion-icon name="add-circle-outline" slot="end"></ion-icon>
       </ion-button>
 
+      <!-- Modal Agregar Entrenamiento -->
       <ion-modal v-if="showAddTraining" :is-open="showAddTraining" @willDismiss="showAddTraining = false">
         <ion-header>
           <ion-toolbar>
@@ -104,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue';
+import { ref, computed } from 'vue';
 import {
   IonMenuButton,
   IonToolbar,
@@ -131,6 +138,15 @@ import {
   IonInput
 } from '@ionic/vue';
 
+// Formatear fecha actual
+const today = new Date();
+const todayFormatted = `${today.toLocaleDateString('es-ES', {
+  weekday: 'long',
+})}, ${today.getDate()} de ${today.toLocaleDateString('es-ES', {
+  month: 'long',
+})}`;
+
+// Mostrar y agregar entrenamientos
 const showDetails = ref(false);
 const showAddTraining = ref(false);
 
@@ -156,18 +172,21 @@ const newTraining = ref({
   day: ''
 });
 
+// Calcular calorías quemadas en función del tipo de entrenamiento y duración
+const calculateCalories = (type: string, duration: number) => {
+  const caloriesPerMinute = {
+    Cardio: 8,
+    Pesas: 4,
+    HIIT: 12,
+    Yoga: 3,
+  };
+  return caloriesPerMinute[type] ? caloriesPerMinute[type] * duration : 0;
+};
+
 const addTraining = () => {
   if (newTraining.value.type && newTraining.value.duration && newTraining.value.day) {
     trainings.value.push({ ...newTraining.value });
     showAddTraining.value = false;
-
-    nextTick(() => {
-      const trainingList = document.querySelector('.green-list');
-      if (trainingList) {
-        trainingList.scrollTop = trainingList.scrollHeight;
-      }
-    });
-
     newTraining.value = { type: '', duration: 0, day: '' };
   } else {
     alert('Por favor, completa todos los campos.');
