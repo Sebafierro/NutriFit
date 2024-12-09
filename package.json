@@ -5,5 +5,9 @@
     "@capacitor/cli": "^6.2.0",
     "@capacitor/core": "^6.2.0",
     "firebase": "^10.14.1"
+  },
+  "devDependencies": {
+    "@vue/cli-service": "5.0.8",
+    "vue-template-compiler": "^2.6.14"
   }
 }

@@ -3,7 +3,6 @@
     <ion-content class="ion-padding login-page">
       <div class="container-login">
         <div class="logo-box">
-          <!-- Imagen importada -->
           <img :src="logo" alt="Logo del sitio" class="logo-img" />
         </div>
 
@@ -18,24 +17,24 @@
           </ion-segment>
 
           <ion-card-content>
+            <!-- Formulario de Inicio de Sesión -->
             <div v-if="segment === 'login'">
               <ion-item>
-                <ion-label position="floating">Correo Electrónico</ion-label>
-                <ion-input type="email" placeholder="Introduce tu correo"></ion-input>
+                <ion-label position="floating">RUT</ion-label>
+                <ion-input v-model="rut" type="text" placeholder="Introduce tu RUT"></ion-input>
               </ion-item>
 
               <ion-item>
                 <ion-label position="floating">Clave de Acceso</ion-label>
-                <ion-input type="password" placeholder="Introduce tu clave"></ion-input>
+                <ion-input v-model="password" type="password" placeholder="Introduce tu clave"></ion-input>
               </ion-item>
 
-              <ion-button expand="block" color="success" class="btn-login">Acceder</ion-button>
+              <ion-button expand="block" color="success" class="btn-login" @click="iniciarSesion">Acceder</ion-button>
 
-              <ion-text class="forgot-link">
-                <a href="#">¿Has olvidado tu clave?</a>
-              </ion-text>
+              <ion-text color="danger" v-if="errorMessage">{{ errorMessage }}</ion-text>
             </div>
 
+            <!-- Formulario de Registro -->
             <div v-else>
               <ion-item>
                 <ion-label position="floating">RUT</ion-label>
@@ -59,11 +58,6 @@
               </ion-item>
 
               <ion-item>
-                <ion-label position="floating">Correo Electrónico</ion-label>
-                <ion-input type="email" v-model="correo" placeholder="Introduce tu correo"></ion-input>
-              </ion-item>
-
-              <ion-item>
                 <ion-label position="floating">Crear Contraseña</ion-label>
                 <ion-input
                   type="password"
@@ -78,15 +72,7 @@
                 Registrarse
               </ion-button>
 
-              <!-- Registro de datos ingresados -->
-              <div v-if="registroRealizado" class="registro-datos">
-                <h3>Datos Registrados:</h3>
-                <p><strong>RUT:</strong> {{ rut }}</p>
-                <p><strong>Nombre:</strong> {{ nombre }}</p>
-                <p><strong>Apellidos:</strong> {{ apellidos }}</p>
-                <p><strong>Fecha de Nacimiento:</strong> {{ fechaNacimiento }}</p>
-                <p><strong>Correo Electrónico:</strong> {{ correo }}</p>
-              </div>
+              <ion-text color="danger" v-if="errorMessage">{{ errorMessage }}</ion-text>
             </div>
           </ion-card-content>
         </ion-card>
@@ -96,36 +82,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import logo from '@/img/dv9y2021487932021-05-263911643Gorilla-Gym.jpg';
+import { ref } from "vue";
+import logo from "@/img/dv9y2021487932021-05-263911643Gorilla-Gym.jpg";
+import { db } from "@/firebase"; // Firebase Firestore
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
-import {
-  IonCard,
-  IonCardContent,
-  IonSegment,
-  IonSegmentButton,
-  IonLabel,
-  IonItem,
-  IonInput,
-  IonButton,
-  IonText,
-  IonDatetime
-} from '@ionic/vue';
+const segment = ref("login");
 
-const segment = ref('login');
-
-const rut = ref('');
-const nombre = ref('');
-const apellidos = ref('');
-const fechaNacimiento = ref('');
-const correo = ref('');
-const password = ref('');
+const rut = ref("");
+const nombre = ref("");
+const apellidos = ref("");
+const fechaNacimiento = ref("");
+const password = ref("");
 const isValidRUT = ref(true);
 const isPasswordStrong = ref(true);
-const registroRealizado = ref(false);
+const errorMessage = ref("");
 
 const validateRUT = () => {
-  const rutWithoutDots = rut.value.replace(/\./g, '').replace('-', '');
+  if (!rut.value || rut.value.trim() === "") {
+    errorMessage.value = "El RUT no puede estar vacío.";
+    isValidRUT.value = false;
+    return;
+  }
+
+  const rutWithoutDots = rut.value.replace(/\./g, "").replace("-", "").trim();
   const body = rutWithoutDots.slice(0, -1);
   const dv = rutWithoutDots.slice(-1).toUpperCase();
   let sum = 0;
@@ -137,9 +117,13 @@ const validateRUT = () => {
   }
 
   const calculatedDV = 11 - (sum % 11);
-  const validDV = calculatedDV === 11 ? '0' : calculatedDV === 10 ? 'K' : String(calculatedDV);
+  const validDV = calculatedDV === 11 ? "0" : calculatedDV === 10 ? "K" : String(calculatedDV);
 
   isValidRUT.value = dv === validDV;
+
+  if (!isValidRUT.value) {
+    errorMessage.value = "El RUT ingresado no es válido.";
+  }
 };
 
 const validatePassword = () => {
@@ -147,96 +131,64 @@ const validatePassword = () => {
   isPasswordStrong.value = passwordCriteria.test(password.value);
 };
 
-const registrarUsuario = () => {
-  if (isValidRUT.value && isPasswordStrong.value) {
-    registroRealizado.value = true;
+const registrarUsuario = async () => {
+  try {
+    if (!isValidRUT.value || rut.value.trim() === "") {
+      errorMessage.value = "El RUT ingresado no es válido.";
+      return;
+    }
+
+    // Limpia y formatea el RUT
+    const rutFormatted = rut.value.trim().replace(/\./g, "").replace("-", "").toUpperCase();
+
+    // Guarda el usuario en Firestore
+    await setDoc(doc(db, "Usuario", rutFormatted), {
+      nombre: `${nombre.value} ${apellidos.value}`,
+      fechaNacimiento: fechaNacimiento.value,
+      rut: rutFormatted,
+      clave_acceso: password.value,
+    });
+
+    errorMessage.value = "";
+    console.log("Usuario registrado exitosamente");
+  } catch (error) {
+    errorMessage.value = "Error al registrar usuario. Intenta de nuevo.";
+    console.error("Error:", error);
+  }
+};
+
+const iniciarSesion = async () => {
+  try {
+    const rutFormatted = rut.value.trim().replace(/\./g, "").replace("-", "").toUpperCase();
+
+    if (!rutFormatted) {
+      errorMessage.value = "El RUT no puede estar vacío.";
+      return;
+    }
+
+    const userDoc = await getDoc(doc(db, "Usuario", rutFormatted));
+
+    if (!userDoc.exists()) {
+      errorMessage.value = "El RUT no está registrado.";
+      return;
+    }
+
+    const userData = userDoc.data();
+
+    if (userData.clave_acceso !== password.value) {
+      errorMessage.value = "La contraseña es incorrecta.";
+      return;
+    }
+
+    errorMessage.value = "";
+    console.log("Inicio de sesión exitoso:", userData);
+  } catch (error) {
+    errorMessage.value = "Error al iniciar sesión. Intenta de nuevo.";
+    console.error("Error:", error);
   }
 };
 </script>
 
 <style scoped>
-.login-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-.container-login {
-  width: 100%;
-  max-width: 420px;
-  padding: 25px;
-  text-align: center;
-  margin: 0 auto; 
-}
-
-.logo-box {
-  margin-bottom: 25px;
-}
-
-.logo-img {
-  width: 90px;
-  height: 90px;
-  margin: 0 auto;
-}
-
-.form-card {
-  border-radius: 25px;
-  padding: 25px;
-  box-shadow: 0px 5px 14px rgba(0, 0, 0, 0.15);
-}
-
-ion-item {
-  margin-bottom: 20px;
-  --padding-start: 12px;
-  --padding-end: 12px;
-  --inner-padding-top: 15px;
-  --inner-padding-bottom: 10px;
-}
-
-ion-label {
-  font-size: 15px;
-  margin-bottom: 10px;
-}
-
-ion-input, ion-datetime {
-  font-size: 14px;
-  --padding-top: 12px;
-}
-
-.forgot-link {
-  display: block;
-  text-align: center;
-  margin-top: 15px;
-}
-
-a {
-  color: var(--ion-color-success);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-.btn-login, .btn-register {
-  margin-top: 20px;
-  font-weight: bold;
-  border-radius: 12px;
-  color: white;
-}
-
-.registro-datos {
-  margin-top: 20px;
-}
-
-@media (min-width: 768px) {
-  .container-login {
-    max-width: 500px;
-  }
-
-  .form-card {
-    padding: 30px;
-  }
-}
+/* Aquí va tu CSS */
 </style>
