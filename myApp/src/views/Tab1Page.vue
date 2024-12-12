@@ -17,7 +17,6 @@
           </ion-segment>
 
           <ion-card-content>
-            <!-- Formulario de Inicio de Sesión -->
             <div v-if="segment === 'login'">
               <ion-item>
                 <ion-label position="floating">RUT</ion-label>
@@ -34,7 +33,6 @@
               <ion-text color="danger" v-if="errorMessage">{{ errorMessage }}</ion-text>
             </div>
 
-            <!-- Formulario de Registro -->
             <div v-else>
               <ion-item>
                 <ion-label position="floating">RUT</ion-label>
@@ -84,8 +82,23 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import logo from "@/img/dv9y2021487932021-05-263911643Gorilla-Gym.jpg";
-import { db } from "@/firebase"; // Firebase Firestore
+import { db } from "@/firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
+
+import {
+  IonPage,
+  IonContent,
+  IonCard,
+  IonCardContent,
+  IonSegment,
+  IonSegmentButton,
+  IonLabel,
+  IonItem,
+  IonInput,
+  IonButton,
+  IonText,
+  IonDatetime,
+} from '@ionic/vue';
 
 const segment = ref("login");
 
@@ -99,67 +112,65 @@ const isPasswordStrong = ref(true);
 const errorMessage = ref("");
 
 const validateRUT = () => {
-  if (!rut.value || rut.value.trim() === "") {
-    errorMessage.value = "El RUT no puede estar vacío.";
-    isValidRUT.value = false;
-    return;
-  }
-
-  const rutWithoutDots = rut.value.replace(/\./g, "").replace("-", "").trim();
-  const body = rutWithoutDots.slice(0, -1);
-  const dv = rutWithoutDots.slice(-1).toUpperCase();
-  let sum = 0;
-  let multiplier = 2;
-
-  for (let i = body.length - 1; i >= 0; i--) {
-    sum += parseInt(body[i]) * multiplier;
-    multiplier = multiplier < 7 ? multiplier + 1 : 2;
-  }
-
-  const calculatedDV = 11 - (sum % 11);
-  const validDV = calculatedDV === 11 ? "0" : calculatedDV === 10 ? "K" : String(calculatedDV);
-
-  isValidRUT.value = dv === validDV;
-
-  if (!isValidRUT.value) {
-    errorMessage.value = "El RUT ingresado no es válido.";
-  }
-};
-
-const validatePassword = () => {
-  const passwordCriteria = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  isPasswordStrong.value = passwordCriteria.test(password.value);
-};
-
-const registrarUsuario = async () => {
-  try {
-    if (!isValidRUT.value || rut.value.trim() === "") {
-      errorMessage.value = "El RUT ingresado no es válido.";
+    if (!rut.value || rut.value.trim() === "") {
+      errorMessage.value = "El RUT no puede estar vacío.";
+      isValidRUT.value = false;
       return;
     }
 
-    // Limpia y formatea el RUT
-    const rutFormatted = rut.value.trim().replace(/\./g, "").replace("-", "").toUpperCase();
+    const rutWithoutDots = rut.value.replace(/\./g, "").replace("-", "").trim();
+    const body = rutWithoutDots.slice(0, -1);
+    const dv = rutWithoutDots.slice(-1).toUpperCase();
+    let sum = 0;
+    let multiplier = 2;
 
-    // Guarda el usuario en Firestore
-    await setDoc(doc(db, "Usuario", rutFormatted), {
-      nombre: `${nombre.value} ${apellidos.value}`,
-      fechaNacimiento: fechaNacimiento.value,
-      rut: rutFormatted,
-      clave_acceso: password.value,
-    });
+    for (let i = body.length - 1; i >= 0; i--) {
+      sum += parseInt(body[i]) * multiplier;
+      multiplier = multiplier < 7 ? multiplier + 1 : 2;
+    }
 
-    errorMessage.value = "";
-    console.log("Usuario registrado exitosamente");
-  } catch (error) {
-    errorMessage.value = "Error al registrar usuario. Intenta de nuevo.";
-    console.error("Error:", error);
-  }
+    const calculatedDV = 11 - (sum % 11);
+    const validDV = calculatedDV === 11 ? "0" : calculatedDV === 10 ? "K" : String(calculatedDV);
+
+    isValidRUT.value = dv === validDV;
+
+    if (!isValidRUT.value) {
+      errorMessage.value = "El RUT ingresado no es válido.";
+    }
+};
+
+const validatePassword = () => {
+    const passwordCriteria = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    isPasswordStrong.value = passwordCriteria.test(password.value);
+};
+
+const registrarUsuario = async () => {
+    try {
+        if (!isValidRUT.value || rut.value.trim() === "") {
+            errorMessage.value = "El RUT ingresado no es válido.";
+            return;
+        }
+
+        const rutFormatted = rut.value.trim().replace(/\./g, "").replace("-", "").toUpperCase();
+
+        await setDoc(doc(db, "Usuario", rutFormatted), {
+            nombre: `${nombre.value} ${apellidos.value}`,
+            fechaNacimiento: fechaNacimiento.value,
+            rut: rutFormatted,
+            clave_acceso: password.value,
+        });
+
+        errorMessage.value = "";
+        console.log("Usuario registrado exitosamente");
+    } catch (error) {
+        errorMessage.value = "Error al registrar usuario. Intenta de nuevo.";
+        console.error("Error:", error);
+    }
 };
 
 const iniciarSesion = async () => {
   try {
-    const rutFormatted = rut.value.trim().replace(/\./g, "").replace("-", "").toUpperCase();
+    const rutFormatted = rut.value.trim().replace(/\./g, "");
 
     if (!rutFormatted) {
       errorMessage.value = "El RUT no puede estar vacío.";
@@ -190,5 +201,4 @@ const iniciarSesion = async () => {
 </script>
 
 <style scoped>
-/* Aquí va tu CSS */
 </style>
